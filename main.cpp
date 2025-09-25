@@ -102,7 +102,7 @@ void load()
 		-0.55f, -0.35f, 0.0f,	// vertex 38
 		-0.32f,  -0.4f, 0.0f,	// vertex 39
 
-		
+
 
 		//Right down lateral face
 		0.32f,  -0.4f, 0.0f,	// vertex 40
@@ -128,41 +128,41 @@ void load()
 		-0.32f, -0.4f, 0.0f,	// vertex 54
 		0.0f,  -0.52f, 0.0f,	// vertex 55
 
-		//Right noise face
+		//Right noYse face
 		0.0f,  -0.25f, 0.0f,	// vertex 56
 		0.32f, -0.4f, 0.0f,		// vertex 57
 		0.29f, -0.7f, 0.0f,		// vertex 58
 		0.0f,  -0.7f, 0.0f,		// vertex 59
 
-		//Left noise face
+		//Left nose face
 		0.0f,  -0.25f, 0.0f,	// vertex 60
 		-0.32f, -0.4f, 0.0f,	// vertex 61
 		-0.29f, -0.7f, 0.0f,	// vertex 62
 		0.0f,  -0.7f, 0.0f,		// vertex 63
 
-		//Right down noise face
+		//Right down nose face
 		0.0f,  -0.7f, 0.0f,		// vertex 64
 		0.29f, -0.7f, 0.0f,		// vertex 65
 		0.23f, -0.83f, 0.0f,	// vertex 66
 		0.0f,  -0.9f, 0.0f,		// vertex 67
 
-		//Left down noise face
+		//Left down nose face
 		0.0f,  -0.7f, 0.0f,		// vertex 68
 		-0.29f, -0.7f, 0.0f,	// vertex 69
 		-0.23f, -0.83f, 0.0f,	// vertex 70
 		0.0f,  -0.9f, 0.0f,		// vertex 71
 
-		//Right noise 
-		0.0f,  -0.53f, 0.0f,	// vertex 72
-		0.25f, -0.50f, 0.0f,	// vertex 73
-		0.10f, -0.58f, 0.0f,	// vertex 74
-		0.0f,  -0.60f, 0.0f,	// vertex 75
+		//Right nose 
+		0.0f,  0.0f, 0.0f,	// vertex 72
+		0.0f, 0.0f, 0.0f,	// vertex 73
+		0.0f, 0.0f, 0.0f,	// vertex 74
+		0.0f,  0.0f, 0.0f,	// vertex 75
 
-		//Left noise 
-		0.0f,  -0.53f, 0.0f,	// vertex 76
-		-0.25f, -0.50f, 0.0f,	// vertex 77
-		-0.10f, -0.58f, 0.0f,	// vertex 78
-		0.0f,  -0.60f, 0.0f,	// vertex 79
+		//Left nose 
+		0.0f, 0.0f, 0.0f,	// vertex 76
+		0.0f, 0.0f, 0.0f,	// vertex 77
+		0.0f, 0.0f, 0.0f,	// vertex 78
+		0.0f, 0.0f, 0.0f,	// vertex 79
 
 		//Right mouth
 		0.0f,  -0.70f, 0.0f,	// vertex 80
@@ -182,146 +182,145 @@ void load()
 
 	{
 		//Right ear 
-		0.4f, 0.25f, 0.1f,      //Vertex 0 
-		0.35f, 0.2f, 0.08f,     //Vertex 1 
-		0.3f, 0.15f, 0.06f,     //Vertex 2 
-		0.45f, 0.28f, 0.12f,    //Vertex 3 
+		0.55f, 0.3f, 0.1f,      //Vertex 0 
+		0.65f, 0.4f, 0.2f,      //Vertex 1 
+		0.35f, 0.15f, 0.02f,    //Vertex 2
+		0.45f, 0.25f, 0.08f,    //Vertex 3 
 
 		//Left ear 
-		0.4f, 0.25f, 0.1f,      //Vertex 4 
-		0.35f, 0.2f, 0.08f,     //Vertex 5 
-		0.3f, 0.15f, 0.06f,     //Vertex 6 
-		0.45f, 0.28f, 0.12f,    //Vertex 7 
+		0.5f, 0.25f, 0.08f,     //Vertex 4 
+		0.6f, 0.35f, 0.15f,     //Vertex 5 
+		0.3f, 0.12f, 0.0f,      //Vertex 6 
+		0.4f, 0.2f, 0.05f,      //Vertex 7 
 
-		//Right Upper Head
-		0.6f, 0.4f, 0.2f,       //Vertex 8
-		0.65f, 0.45f, 0.25f,    //Vertex 9 
-		0.55f, 0.35f, 0.18f,    //Vertex 10 
-		0.58f, 0.38f, 0.19f,    //Vertex 11 
+		//Right Upper Head 
+		0.7f, 0.45f, 0.25f,     //Vertex 8 
+		0.6f, 0.38f, 0.18f,     //Vertex 9 
+		0.55f, 0.32f, 0.15f,    //Vertex 10 
+		0.62f, 0.4f, 0.2f,      //Vertex 11 
 
 		//Left Upper Head 
-		0.6f, 0.4f, 0.2f,       //Vertex 12 
-		0.65f, 0.45f, 0.25f,    //Vertex 13 
-		0.55f, 0.35f, 0.18f,    //Vertex 14 
-		0.58f, 0.38f, 0.19f,    //Vertex 15 
+		0.65f, 0.4f, 0.2f,      //Vertex 12 
+		0.55f, 0.33f, 0.15f,    //Vertex 13 
+		0.5f, 0.28f, 0.12f,     //Vertex 14 
+		0.58f, 0.35f, 0.17f,    //Vertex 15 
 
 		//Right lateral face 
-		0.52f, 0.32f, 0.15f,    //Vertex 16 
-		0.58f, 0.38f, 0.19f,    //Vertex 17
-		0.48f, 0.28f, 0.12f,    //Vertex 18 
-		0.45f, 0.25f, 0.1f,     //Vertex 19 
+		0.58f, 0.35f, 0.17f,    //Vertex 16 
+		0.55f, 0.32f, 0.15f,    //Vertex 17
+		0.45f, 0.25f, 0.08f,    //Vertex 18 
+		0.4f, 0.2f, 0.05f,      //Vertex 19 
 
 		//Left lateral face 
-		0.52f, 0.32f, 0.15f,    //Vertex 20
-		0.58f, 0.38f, 0.19f,    //Vertex 21 
-		0.48f, 0.28f, 0.12f,    //Vertex 22 
-		0.45f, 0.25f, 0.1f,     //Vertex 23 
+		0.52f, 0.3f, 0.13f,     //Vertex 20
+		0.5f, 0.28f, 0.12f,     //Vertex 21 
+		0.38f, 0.18f, 0.04f,    //Vertex 22 
+		0.35f, 0.15f, 0.02f,    //Vertex 23 
 
 		//Right middle face
-		0.62f, 0.42f, 0.22f,    //Vertex 24 
-		0.6f, 0.4f, 0.2f,       //Vertex 25 
-		0.58f, 0.38f, 0.19f,    //Vertex 26
-		0.6f, 0.4f, 0.2f,       //Vertex 27 
+		0.65f, 0.42f, 0.22f,    //Vertex 24 
+		0.62f, 0.4f, 0.2f,      //Vertex 25 
+		0.6f, 0.38f, 0.18f,     //Vertex 26
+		0.63f, 0.41f, 0.21f,    //Vertex 27 
 
 		//Left middle face 
-		0.62f, 0.42f, 0.22f,    //Vertex 28 
-		0.6f, 0.4f, 0.2f,       //Vertex 29 
-		0.58f, 0.38f, 0.19f,    //Vertex 30 
-		0.6f, 0.4f, 0.2f,        //Vertex 31
+		0.6f, 0.38f, 0.18f,     //Vertex 28 
+		0.58f, 0.35f, 0.17f,    //Vertex 29 
+		0.55f, 0.32f, 0.15f,    //Vertex 30 
+		0.58f, 0.36f, 0.17f,    //Vertex 31
 
 		//Right eye
-		0.0f, 0.0f, 0.0f,		//Vertex 28 
-		0.0f, 0.0f, 0.0f,       //Vertex 29 
-		0.0f, 0.0f, 0.0f,    	//Vertex 30
-		0.0f, 0.0f, 0.0f,        //Vertex 31 
+		0.0f, 0.0f, 0.0f,      //Vertex 32 
+		0.0f, 0.0f, 0.0f,      //Vertex 33
+		0.0f, 0.0f, 0.0f,       //Vertex 34 
+		0.0f, 0.0f, 0.0f,      //Vertex 35 
 
-		//Leftt eye
-		0.0f, 0.0f, 0.0f,		//Vertex 28 
-		0.0f, 0.0f, 0.0f,       //Vertex 29 
-		0.0f, 0.0f, 0.0f,    	//Vertex 30 
-		0.0f, 0.0f, 0.0f,        //Vertex 31 
+		//Left eye 
+		0.0f, 0.0f, 0.0f,      //Vertex 36 
+		0.0f, 0.0f, 0.0f,      //Vertex 37 
+		0.0f, 0.0f, 0.0f,      //Vertex 38 
+		0.0f, 0.0f, 0.0f,      //Vertex 39 
 
-		
-		
-		//Right lateral down face
-		0.52f, 0.32f, 0.15f,    //Vertex 32 
-		0.58f, 0.38f, 0.19f,    //Vertex 33 
-		0.48f, 0.28f, 0.12f,    //Vertex 34 
-		0.45f, 0.25f, 0.1f,     //Vertex 35
+		//Right lateral down face 
+		0.55f, 0.32f, 0.15f,    //Vertex 40 
+		0.52f, 0.3f, 0.13f,     //Vertex 41 
+		0.48f, 0.26f, 0.1f,     //Vertex 42 
+		0.5f, 0.28f, 0.12f,     //Vertex 43
 
 		//Left lateral down face
-		0.52f, 0.32f, 0.15f,    //Vertex 36 
-		0.58f, 0.38f, 0.19f,    //Vertex 37 
-		0.48f, 0.28f, 0.12f,    //Vertex 38
-		0.45f, 0.25f, 0.1f,     //Vertex 39
+		0.5f, 0.28f, 0.12f,     //Vertex 44 
+		0.47f, 0.25f, 0.09f,    //Vertex 45 
+		0.43f, 0.22f, 0.07f,    //Vertex 46
+		0.45f, 0.24f, 0.08f,    //Vertex 47
 
-
-		//Right middle down face
-		0.62f, 0.42f, 0.22f,    //Vertex 40 
-		0.6f, 0.4f, 0.2f,       //Vertex 41 
-		0.58f, 0.38f, 0.19f,    //Vertex 42
-		0.6f, 0.4f, 0.2f,       //Vertex 43
+		//Right middle down face 
+		0.6f, 0.38f, 0.18f,     //Vertex 48 
+		0.58f, 0.35f, 0.17f,    //Vertex 49 
+		0.55f, 0.32f, 0.15f,    //Vertex 50
+		0.57f, 0.34f, 0.16f,    //Vertex 51
 
 		//Left middle down face
-		0.62f, 0.42f, 0.22f,    //Vertex 44 
-		0.6f, 0.4f, 0.2f,       //Vertex 45 
-		0.58f, 0.38f, 0.19f,    //Vertex 46
-		0.6f, 0.4f, 0.2f,       //Vertex 47
+		0.55f, 0.32f, 0.15f,    //Vertex 52 
+		0.53f, 0.3f, 0.14f,     //Vertex 53 
+		0.5f, 0.28f, 0.12f,     //Vertex 54
+		0.52f, 0.29f, 0.13f,    //Vertex 55
 
-		//Right noise face
-		0.62f, 0.42f, 0.22f,    //Vertex 48 
-		0.6f, 0.4f, 0.2f,       //Vertex 49 
-		0.58f, 0.38f, 0.19f,    //Vertex 50
-		0.6f, 0.4f, 0.2f,       //Vertex 51
+		//Right nose face 
+		0.62f, 0.4f, 0.2f,      //Vertex 56 
+		0.6f, 0.38f, 0.18f,     //Vertex 57 
+		0.58f, 0.35f, 0.17f,    //Vertex 58
+		0.59f, 0.37f, 0.18f,    //Vertex 59
 
-		//Left noise face
-		0.62f, 0.42f, 0.22f,    //Vertex 52 
-		0.6f, 0.4f, 0.2f,       //Vertex 53 
-		0.58f, 0.38f, 0.19f,    //Vertex 54
-		0.6f, 0.4f, 0.2f,       //Vertex 55
+		//Left nose face
+		0.58f, 0.35f, 0.17f,    //Vertex 60 
+		0.56f, 0.33f, 0.15f,    //Vertex 61 
+		0.54f, 0.31f, 0.14f,    //Vertex 62
+		0.55f, 0.32f, 0.15f,    //Vertex 63
 
-		//Right down noise face
-		0.62f, 0.42f, 0.22f,    //Vertex 56 
-		0.6f, 0.4f, 0.2f,       //Vertex 57 
-		0.58f, 0.38f, 0.19f,    //Vertex 58
-		0.6f, 0.4f, 0.2f,       //Vertex 59
+		//Right down nose face 
+		0.59f, 0.37f, 0.18f,    //Vertex 64 
+		0.57f, 0.34f, 0.16f,    //Vertex 65 
+		0.55f, 0.32f, 0.15f,    //Vertex 66
+		0.56f, 0.33f, 0.15f,    //Vertex 67
 
-		//Left down noise face
-		0.62f, 0.42f, 0.22f,    //Vertex 60 
-		0.6f, 0.4f, 0.2f,       //Vertex 61 
-		0.58f, 0.38f, 0.19f,    //Vertex 62
-		0.6f, 0.4f, 0.2f,       //Vertex 63
+		//Left down nose face
+		0.55f, 0.32f, 0.15f,    //Vertex 68 
+		0.53f, 0.3f, 0.14f,     //Vertex 69 
+		0.51f, 0.28f, 0.13f,    //Vertex 70
+		0.52f, 0.29f, 0.13f,    //Vertex 71
 
-		//Right noise
-		0.0f, 0.0f, 0.0f,		//Vertex 64 
-		0.0f, 0.0f, 0.0f,       //Vertex 65 
-		0.0f, 0.0f, 0.0f,    	//Vertex 66 
-		0.0f, 0.0f, 0.0f,       //Vertex 67
+		//Right nose
+		0.0f, 0.0f, 0.0f,      //Vertex 72 
+		0.0f, 0.0f, 0.0f,      //Vertex 73 
+		0.0f, 0.0f, 0.0f,      //Vertex 74 
+		0.0f, 0.0f, 0.0f,      //Vertex 75
 
-		//Left noise
-		0.0f, 0.0f, 0.0f,		//Vertex 68 
-		0.0f, 0.0f, 0.0f,       //Vertex 69 
-		0.0f, 0.0f, 0.0f,    	//Vertex 70 
-		0.0f, 0.0f, 0.0f,       //Vertex 71
+		//Left nose
+		0.0f, 0.0f, 0.0f,      //Vertex 76 
+		0.0f, 0.0f, 0.0f,      //Vertex 77 
+		0.0f, 0.0f, 0.0f,      //Vertex 78 
+		0.0f, 0.0f, 0.0f,      //Vertex 79
 
-		//Right mouth
-		0.0f, 0.0f, 0.0f,		//Vertex 72 
-		0.0f, 0.0f, 0.0f,       //Vertex 73 
-		0.0f, 0.0f, 0.0f,    	//Vertex 74 
-		0.0f, 0.0f, 0.0f,       //Vertex 75
+		//Right mouth 
+		0.0f, 0.0f, 0.0f,      //Vertex 80
+		0.0f, 0.0f, 0.0f,      //Vertex 81 
+		0.0f, 0.0f, 0.0f,      //Vertex 82 
+		0.0f, 0.0f, 0.0f,      //Vertex 83
 
 		//Left mouth
-		0.0f, 0.0f, 0.0f,		//Vertex 76 
-		0.0f, 0.0f, 0.0f,       //Vertex 77 
-		0.0f, 0.0f, 0.0f,    	//Vertex 78 
-		0.0f, 0.0f, 0.0f,       //Vertex 79
-
+		0.0f, 0.0f, 0.0f,      //Vertex 84 
+		0.0f, 0.0f, 0.0f,      //Vertex 85 
+		0.0f, 0.0f, 0.0f,      //Vertex 86 
+		0.0f, 0.0f, 0.0f,      //Vertex 87
 	};
+
+
+
 
 	// The index buffer references the vertices we paint, in order
 	//here we have two triangles
 	const GLuint indices[] =
-	{ 0, 1, 2,					// triangle 0
+	{   0, 1, 2,				// triangle 0
 		0, 2, 3,				// triangle 1
 
 		4, 5, 6,				// triangle 2
@@ -499,6 +498,5 @@ int main(void)
 	glfwTerminate();
 	return 0;
 }
-
 
 
