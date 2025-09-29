@@ -1,4 +1,4 @@
-# Brown bear 2D graphic made with OpenGL
+# Exercise 01 Brown bear 2D graphic made with OpenGL
 Authors: Nieves Yashuang, Lucía Pérez 
 
 --
