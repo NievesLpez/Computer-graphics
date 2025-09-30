@@ -9,3 +9,5 @@ Authors: Nieves Yashuang, Lucía Pérez
 ### Reference ###
 ![WhatsApp Image 2025-09-22 at 21 17 21_c5472595](https://github.com/user-attachments/assets/12236be1-7ddb-4d8d-8fe7-ea45a5062192)
 
+# Exercise 02 3D objects in 2D upload with different colors. 
+Authors: Nieves Yashuang, Lucía Pérez 
