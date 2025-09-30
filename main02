@@ -1,6 +1,6 @@
 /*  Base code by Alun Evans 2016 LaSalle (aevanss@salleurl.edu) modified by: Conrado Ruiz, Ferran Ruiz 2024*/
 
-// student name: lucia perez y nieves lopez
+// student name: Lucia Perez y Nieves Yashuang Lopez
 
 //include some standard libraries
 #include <stdio.h>
@@ -22,8 +22,14 @@ using namespace glm;
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
-const char filename[] = "assets/teapot.obj";
-vector <tinyobj::shape_t> shapes;
+const char teapot[] = "assets/teapot.obj";
+vector <tinyobj::shape_t> shapeTeapot;
+
+const char bunny[] = "assets/bunny.obj";
+vector <tinyobj::shape_t> shapeBunny;
+
+const char plane[] = "assets/plane.obj";
+vector <tinyobj::shape_t> shapePlane;
 
 //global variables to help us do things
 int g_ViewportWidth = 512; int g_ViewportHeight = 512; // Default window size, in pixels
@@ -31,8 +37,15 @@ double mouse_x, mouse_y;	//variables storing mouse position
 const vec3 g_backgroundColor(0.2f, 0.2f, 0.2f); // background colour - a GLM 3-component vector
 
 GLuint g_simpleShader = 0;	//shader identifier
-GLuint g_Vao = 0;			//vao
-GLuint g_NumTriangles = 0;	 //  Number of triangles we are painting.
+//teapot vao
+GLuint teapotVao = 0;			//vao
+GLuint teapotNumTriangles = 0;	 //  Number of triangles we are painting.
+//bunny vao
+GLuint bunnyVao = 0;			//vao
+GLuint bunnyNumTriangles = 0;	 //  Number of triangles we are painting.
+//plane vao
+GLuint planeVao = 0;			//vao
+GLuint planeNumTriangles = 0;	 //  Number of triangles we are painting.
 
 // ------------------------------------------------------------------------------------------
 // This function manually creates a square geometry (defined in the array vertices[])
@@ -42,12 +55,32 @@ void load()
 	//**********************
 	// CODE TO SET GEOMETRY
 	//**********************
-	bool ret = tinyobj::LoadObj(shapes, filename);
+	bool ret;
+	//Teapot
+	 ret = tinyobj::LoadObj(shapeTeapot, teapot);
 
 	if (ret)
-		cout << "OBJ File: " << filename << " sucessfully loaded\n";
+		cout << "OBJ File: " << teapot << " sucessfully loaded\n";
 	else
-		cout << "OBJ File:" << filename << " cannot be found or is not a valid OBJ\n";
+		cout << "OBJ File:" << teapot << " cannot be found or is not a valid OBJ\n";
+
+
+	//Bunny
+	ret = tinyobj::LoadObj(shapeBunny, bunny);
+
+	if (ret)
+		cout << "OBJ File: " << bunny << " sucessfully loaded\n";
+	else
+		cout << "OBJ File:" << bunny << " cannot be found or is not a valid OBJ\n";
+
+
+	//Plane
+	ret = tinyobj::LoadObj(shapePlane, plane);
+
+	if (ret)
+		cout << "OBJ File: " << plane << " sucessfully loaded\n";
+	else
+		cout << "OBJ File:" << plane << " cannot be found or is not a valid OBJ\n";
 
 	//the positions of the corner of the square, each a 3-component vector, x, y, z
 	const GLfloat vertices[] = 
@@ -79,22 +112,73 @@ void load()
 	g_simpleShader = simpleShader.program;
 
 	// Create the VAO where we store all geometry (stored in g_Vao)
-	g_Vao = gl_createAndBindVAO();
+
+	teapotVao = gl_createAndBindVAO();
+	
 	//std::cout << "vao: " << g_Vao;
 
+	
 	//create vertex buffer for positions, colors, and indices, and bind them to shader
-	gl_createAndBindAttribute(&(shapes[0].mesh.positions[0]),
-		sizeof(float) * shapes[0].mesh.positions.size(),
+
+	gl_createAndBindAttribute(&(shapeTeapot[0].mesh.positions[0]),
+		sizeof(float) * shapeTeapot[0].mesh.positions.size(),
 		g_simpleShader, "a_vertex", 3);
+
 	//gl_createAndBindAttribute(colors, sizeof(colors), g_simpleShader, "a_color", 3);
-	gl_createIndexBuffer(&(shapes[0].mesh.indices[0]),
-		sizeof(unsigned int) * shapes[0].mesh.indices.size());
+
+	gl_createIndexBuffer(&(shapeTeapot[0].mesh.indices[0]),
+		sizeof(unsigned int) * shapeTeapot[0].mesh.indices.size());
 
 	//unbind everything
+
 	gl_unbindVAO();
 
 	//store number of triangles (use in draw())
-	g_NumTriangles = shapes[0].mesh.indices.size() / 3;
+
+	teapotNumTriangles = shapeTeapot[0].mesh.indices.size() / 3;
+
+	//--------------------------------------------
+		//create vertex buffer for positions, colors, and indices, and bind them to shader
+	bunnyVao = gl_createAndBindVAO();
+
+	gl_createAndBindAttribute(&(shapeBunny[0].mesh.positions[0]),
+		sizeof(float) * shapeBunny[0].mesh.positions.size(),
+		g_simpleShader, "a_vertex", 3);
+
+	//gl_createAndBindAttribute(colors, sizeof(colors), g_simpleShader, "a_color", 3);
+
+	gl_createIndexBuffer(&(shapeBunny[0].mesh.indices[0]),
+		sizeof(unsigned int) * shapeBunny[0].mesh.indices.size());
+
+	//unbind everything
+
+	gl_unbindVAO();
+
+	//store number of triangles (use in draw())
+
+	bunnyNumTriangles = shapeBunny[0].mesh.indices.size() / 3;
+
+	//--------------------------------------------
+	//create vertex buffer for positions, colors, and indices, and bind them to shader
+
+	planeVao = gl_createAndBindVAO();
+
+	gl_createAndBindAttribute(&(shapePlane[0].mesh.positions[0]),
+		sizeof(float) * shapePlane[0].mesh.positions.size(),
+		g_simpleShader, "a_vertex", 3);
+
+	//gl_createAndBindAttribute(colors, sizeof(colors), g_simpleShader, "a_color", 3);
+
+	gl_createIndexBuffer(&(shapePlane[0].mesh.indices[0]),
+		sizeof(unsigned int) * shapePlane[0].mesh.indices.size());
+
+	//unbind everything
+
+	gl_unbindVAO();
+
+	//store number of triangles (use in draw())
+	planeNumTriangles = shapePlane[0].mesh.indices.size() / 3;
+
 }
 
 // ------------------------------------------------------------------------------------------
@@ -108,14 +192,22 @@ void draw()
 	// activate shader
 	glUseProgram(g_simpleShader);
 
-	//bind the geometry
-	gl_bindVAO(g_Vao);
-
 	GLuint colorLoc = glGetUniformLocation(g_simpleShader, "u_color");
-	glUniform3f(colorLoc, 1.0, 1.0, 1.0);
 
-	// Draw to screen
-	glDrawElements(GL_TRIANGLES, 3 * g_NumTriangles, GL_UNSIGNED_INT, 0);
+	//teapot
+	gl_bindVAO(teapotVao);
+	glUniform3f(colorLoc, 0.68, 0.88, 0.91);
+	glDrawElements(GL_TRIANGLES, 3 * teapotNumTriangles, GL_UNSIGNED_INT, 0);
+
+	//bunny
+	gl_bindVAO(bunnyVao);
+	glUniform3f(colorLoc, 0.68, 0.88, 0.91);
+	glDrawElements(GL_TRIANGLES, 3 * bunnyNumTriangles, GL_UNSIGNED_INT, 0);
+
+	//plane
+	gl_bindVAO(planeVao);
+	glUniform3f(colorLoc, 0.68, 0.88, 0.91);
+	glDrawElements(GL_TRIANGLES, 3 * planeNumTriangles, GL_UNSIGNED_INT, 0);
 
 }
 
@@ -184,5 +276,3 @@ int main(void)
     glfwTerminate();
     return 0;
 }
-
-
