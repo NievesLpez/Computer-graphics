@@ -16,6 +16,7 @@
 #include "glfunctions.h"	//include all OpenGL stuff
 #include "Shader.h"			// class to compile shaders
 
+
 using namespace std;
 using namespace glm;
 
@@ -37,12 +38,15 @@ double mouse_x, mouse_y;	//variables storing mouse position
 const vec3 g_backgroundColor(0.2f, 0.2f, 0.2f); // background colour - a GLM 3-component vector
 
 GLuint g_simpleShader = 0;	//shader identifier
+
 //teapot vao
 GLuint teapotVao = 0;			//vao
 GLuint teapotNumTriangles = 0;	 //  Number of triangles we are painting.
+
 //bunny vao
 GLuint bunnyVao = 0;			//vao
 GLuint bunnyNumTriangles = 0;	 //  Number of triangles we are painting.
+
 //plane vao
 GLuint planeVao = 0;			//vao
 GLuint planeNumTriangles = 0;	 //  Number of triangles we are painting.
@@ -57,7 +61,7 @@ void load()
 	//**********************
 	bool ret;
 	//Teapot
-	 ret = tinyobj::LoadObj(shapeTeapot, teapot);
+	ret = tinyobj::LoadObj(shapeTeapot, teapot);
 
 	if (ret)
 		cout << "OBJ File: " << teapot << " sucessfully loaded\n";
@@ -83,27 +87,27 @@ void load()
 		cout << "OBJ File:" << plane << " cannot be found or is not a valid OBJ\n";
 
 	//the positions of the corner of the square, each a 3-component vector, x, y, z
-	const GLfloat vertices[] = 
-		{	0.5f, -0.5f, 0.0f,		// vertex 0
-			0.5f,  0.5f, 0.0f,		// vertex 1
-		   -0.5f,  0.5f, 0.0f,		// vertex 2
-		   -0.5f, -0.5f, 0.0f  };	// vertex 3
+	const GLfloat vertices[] =
+	{ 0.5f, -0.5f, 0.0f,		// vertex 0
+		0.5f,  0.5f, 0.0f,		// vertex 1
+	   -0.5f,  0.5f, 0.0f,		// vertex 2
+	   -0.5f, -0.5f, 0.0f };	// vertex 3
 
 	//we assign a colour to each corner (each colour is RGB)
-	const GLfloat colors[] = 
-		{	1.0f, 0.0f, 0.0f,		// color of vertex 1 (Red)
-			0.f, 1.0f, 0.0f,		// color of vertex 1 (Green)
-			0.0f, 0.0f, 1.0f,		// color of vertex 1 (Blue)
-			1.0f, 1.0f, 0.0f };		// color of vertex 1 (Yellow)
+	const GLfloat colors[] =
+	{ 1.0f, 0.0f, 0.0f,		// color of vertex 1 (Red)
+		0.f, 1.0f, 0.0f,		// color of vertex 1 (Green)
+		0.0f, 0.0f, 1.0f,		// color of vertex 1 (Blue)
+		1.0f, 1.0f, 0.0f };		// color of vertex 1 (Yellow)
 
 	// The index buffer references the vertices we paint, in order
 	//here we have two triangles
-	const GLuint indices[] = 
-		{	0, 1, 2,				// triangle 0
-			0, 2, 3  };				// triangle 1
+	const GLuint indices[] =
+	{ 0, 1, 2,				// triangle 0
+		0, 2, 3 };				// triangle 1
 
 
- 	//**********************
+	//**********************
 	// CODE TO LOAD EVERYTHING INTO MEMORY
 	//**********************
 
@@ -114,10 +118,10 @@ void load()
 	// Create the VAO where we store all geometry (stored in g_Vao)
 
 	teapotVao = gl_createAndBindVAO();
-	
+
 	//std::cout << "vao: " << g_Vao;
 
-	
+
 	//create vertex buffer for positions, colors, and indices, and bind them to shader
 
 	gl_createAndBindAttribute(&(shapeTeapot[0].mesh.positions[0]),
@@ -188,11 +192,11 @@ void draw()
 {
 	//clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	// activate shader
 	glUseProgram(g_simpleShader);
 
-	GLuint colorLoc = glGetUniformLocation(g_simpleShader, "u_color");
+	GLuint colorLoc = glGetUniformLocation(g_simpleShader, "u_color"); //get color
 
 	//teapot
 	gl_bindVAO(teapotVao);
@@ -201,12 +205,12 @@ void draw()
 
 	//bunny
 	gl_bindVAO(bunnyVao);
-	glUniform3f(colorLoc, 0.68, 0.88, 0.91);
+	glUniform3f(colorLoc, 0.3f, 0.8f, 0.2);
 	glDrawElements(GL_TRIANGLES, 3 * bunnyNumTriangles, GL_UNSIGNED_INT, 0);
 
 	//plane
 	gl_bindVAO(planeVao);
-	glUniform3f(colorLoc, 0.68, 0.88, 0.91);
+	glUniform3f(colorLoc, 1.0, 0.75, 0.8);
 	glDrawElements(GL_TRIANGLES, 3 * planeNumTriangles, GL_UNSIGNED_INT, 0);
 
 }
@@ -215,9 +219,9 @@ void draw()
 // This function is called every time you press a screen
 // ------------------------------------------------------------------------------------------
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    //quit
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, 1);
+	//quit
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, 1);
 	//reload
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		load();
@@ -227,9 +231,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 // This function is called every time you click the mouse
 // ------------------------------------------------------------------------------------------
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT) {
-        cout << "Left mouse down at" << mouse_x << ", " << mouse_y << endl;
-    }
+	if (button == GLFW_MOUSE_BUTTON_LEFT) {
+		cout << "Left mouse down at" << mouse_x << ", " << mouse_y << endl;
+	}
 }
 
 int main(void)
@@ -242,7 +246,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	window = glfwCreateWindow(g_ViewportWidth, g_ViewportHeight, "Hello OpenGL!", NULL, NULL);
-	if (!window) {glfwTerminate();	return -1;}
+	if (!window) { glfwTerminate();	return -1; }
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -257,22 +261,22 @@ int main(void)
 	//load all the resources
 	load();
 
-    // Loop until the user closes the window
-    while (!glfwWindowShouldClose(window))
-    {
+	// Loop until the user closes the window
+	while (!glfwWindowShouldClose(window))
+	{
 		draw();
 
-        // Swap front and back buffers
-        glfwSwapBuffers(window);
-        
-        // Poll for and process events
-        glfwPollEvents();
-        
-        //mouse position must be tracked constantly (callbacks do not give accurate delta)
-        glfwGetCursorPos(window, &mouse_x, &mouse_y);
-    }
+		// Swap front and back buffers
+		glfwSwapBuffers(window);
 
-    //terminate glfw and exit
-    glfwTerminate();
-    return 0;
+		// Poll for and process events
+		glfwPollEvents();
+
+		//mouse position must be tracked constantly (callbacks do not give accurate delta)
+		glfwGetCursorPos(window, &mouse_x, &mouse_y);
+	}
+
+	//terminate glfw and exit
+	glfwTerminate();
+	return 0;
 }
