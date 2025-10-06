@@ -15,6 +15,9 @@
 //include some custom code files
 #include "glfunctions.h"	//include all OpenGL stuff
 #include "Shader.h"			// class to compile shaders
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp> 
 
 
 using namespace std;
@@ -29,13 +32,18 @@ vector <tinyobj::shape_t> shapeTeapot;
 const char bunny[] = "assets/bunny.obj";
 vector <tinyobj::shape_t> shapeBunny;
 
-const char plane[] = "assets/plane.obj";
-vector <tinyobj::shape_t> shapePlane;
 
 //global variables to help us do things
 int g_ViewportWidth = 512; int g_ViewportHeight = 512; // Default window size, in pixels
 double mouse_x, mouse_y;	//variables storing mouse position
 const vec3 g_backgroundColor(0.2f, 0.2f, 0.2f); // background colour - a GLM 3-component vector
+
+//global var transf
+mat4 modelTeapot = mat4(1.0f);
+float teapot_angulo = 0.0f;
+float teapot_angulo02 = 0.0f;
+vec3 teapotPos = vec3(1.0f);
+mat4 modelBunny = mat4(1.0f);
 
 GLuint g_simpleShader = 0;	//shader identifier
 
@@ -47,9 +55,6 @@ GLuint teapotNumTriangles = 0;	 //  Number of triangles we are painting.
 GLuint bunnyVao = 0;			//vao
 GLuint bunnyNumTriangles = 0;	 //  Number of triangles we are painting.
 
-//plane vao
-GLuint planeVao = 0;			//vao
-GLuint planeNumTriangles = 0;	 //  Number of triangles we are painting.
 
 // ------------------------------------------------------------------------------------------
 // This function manually creates a square geometry (defined in the array vertices[])
@@ -77,14 +82,6 @@ void load()
 	else
 		cout << "OBJ File:" << bunny << " cannot be found or is not a valid OBJ\n";
 
-
-	//Plane
-	ret = tinyobj::LoadObj(shapePlane, plane);
-
-	if (ret)
-		cout << "OBJ File: " << plane << " sucessfully loaded\n";
-	else
-		cout << "OBJ File:" << plane << " cannot be found or is not a valid OBJ\n";
 
 	//the positions of the corner of the square, each a 3-component vector, x, y, z
 	const GLfloat vertices[] =
@@ -162,27 +159,6 @@ void load()
 
 	bunnyNumTriangles = shapeBunny[0].mesh.indices.size() / 3;
 
-	//--------------------------------------------
-	//create vertex buffer for positions, colors, and indices, and bind them to shader
-
-	planeVao = gl_createAndBindVAO();
-
-	gl_createAndBindAttribute(&(shapePlane[0].mesh.positions[0]),
-		sizeof(float) * shapePlane[0].mesh.positions.size(),
-		g_simpleShader, "a_vertex", 3);
-
-	//gl_createAndBindAttribute(colors, sizeof(colors), g_simpleShader, "a_color", 3);
-
-	gl_createIndexBuffer(&(shapePlane[0].mesh.indices[0]),
-		sizeof(unsigned int) * shapePlane[0].mesh.indices.size());
-
-	//unbind everything
-
-	gl_unbindVAO();
-
-	//store number of triangles (use in draw())
-	planeNumTriangles = shapePlane[0].mesh.indices.size() / 3;
-
 }
 
 // ------------------------------------------------------------------------------------------
@@ -196,22 +172,39 @@ void draw()
 	// activate shader
 	glUseProgram(g_simpleShader);
 
+	
+
 	GLuint colorLoc = glGetUniformLocation(g_simpleShader, "u_color"); //get color
+	GLuint model_loc = glGetUniformLocation(g_simpleShader, "u_model"); //get mat
 
 	//teapot
 	gl_bindVAO(teapotVao);
 	glUniform3f(colorLoc, 0.68, 0.88, 0.91);
+
+	mat4 model1 = translate(mat4(1.0f), vec3(teapotPos));
+	mat4 model3 = glm::scale(mat4(1.0f), vec3(0.8, 0.8, 0.8));
+	mat4 modelTeapotRot = glm::rotate(mat4(1.0f), teapot_angulo, vec3(0.0, 1.0, 0.0));
+	mat4 modelTeapotRotUp = glm::rotate(mat4(1.0f), teapot_angulo02, vec3(1.0, 0.0, 0.0));
+
+	mat4 modelTeapotFinal = modelTeapot + ( model1 * model3 * modelTeapotRot * modelTeapotRotUp);
+
+	glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(modelTeapotFinal));
+
 	glDrawElements(GL_TRIANGLES, 3 * teapotNumTriangles, GL_UNSIGNED_INT, 0);
 
 	//bunny
 	gl_bindVAO(bunnyVao);
-	glUniform3f(colorLoc, 0.3f, 0.8f, 0.2);
+	glUniform3f(colorLoc, 1.0f, 1.0f, 1.0);
+
+	mat4 model2 = translate(mat4(1.0f), vec3(0.0, -0.7, 0.0));
+	mat4 model4 = glm::scale(mat4(1.0f), vec3(1.3, 1.3, 1.3));
+
+	mat4 modelBunnyFinal = modelBunny + (model2 * model4);
+
+	glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(modelBunnyFinal));
+
 	glDrawElements(GL_TRIANGLES, 3 * bunnyNumTriangles, GL_UNSIGNED_INT, 0);
 
-	//plane
-	gl_bindVAO(planeVao);
-	glUniform3f(colorLoc, 1.0, 0.75, 0.8);
-	glDrawElements(GL_TRIANGLES, 3 * planeNumTriangles, GL_UNSIGNED_INT, 0);
 
 }
 
@@ -225,6 +218,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//reload
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		load();
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
+		teapot_angulo += 20;
+	};
+	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+		teapot_angulo -= 20;
+	};
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+		teapot_angulo02 += 20;
+	};
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+		teapot_angulo02 -= 20;
+	};
 }
 
 // ------------------------------------------------------------------------------------------
@@ -232,6 +237,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 // ------------------------------------------------------------------------------------------
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT) {
+		teapotPos * (mouse_x, mouse_y)
 		cout << "Left mouse down at" << mouse_x << ", " << mouse_y << endl;
 	}
 }
