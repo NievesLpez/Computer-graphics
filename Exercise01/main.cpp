@@ -128,41 +128,41 @@ void load()
 		-0.32f, -0.4f, 0.0f,	// vertex 54
 		0.0f,  -0.52f, 0.0f,	// vertex 55
 
-		//Right noYse face
+		//Right noise face
 		0.0f,  -0.25f, 0.0f,	// vertex 56
 		0.32f, -0.4f, 0.0f,		// vertex 57
 		0.29f, -0.7f, 0.0f,		// vertex 58
 		0.0f,  -0.7f, 0.0f,		// vertex 59
 
-		//Left nose face
+		//Left noise face
 		0.0f,  -0.25f, 0.0f,	// vertex 60
 		-0.32f, -0.4f, 0.0f,	// vertex 61
 		-0.29f, -0.7f, 0.0f,	// vertex 62
 		0.0f,  -0.7f, 0.0f,		// vertex 63
 
-		//Right down nose face
+		//Right down noise face
 		0.0f,  -0.7f, 0.0f,		// vertex 64
 		0.29f, -0.7f, 0.0f,		// vertex 65
 		0.23f, -0.83f, 0.0f,	// vertex 66
 		0.0f,  -0.9f, 0.0f,		// vertex 67
 
-		//Left down nose face
+		//Left down noise face
 		0.0f,  -0.7f, 0.0f,		// vertex 68
 		-0.29f, -0.7f, 0.0f,	// vertex 69
 		-0.23f, -0.83f, 0.0f,	// vertex 70
 		0.0f,  -0.9f, 0.0f,		// vertex 71
 
-		//Right nose 
-		0.0f,  0.0f, 0.0f,	// vertex 72
-		0.0f, 0.0f, 0.0f,	// vertex 73
-		0.0f, 0.0f, 0.0f,	// vertex 74
-		0.0f,  0.0f, 0.0f,	// vertex 75
+		//Right noise 
+		0.0f,  -0.53f, 0.0f,	// vertex 72
+		0.25f, -0.50f, 0.0f,	// vertex 73
+		0.10f, -0.58f, 0.0f,	// vertex 74
+		0.0f,  -0.60f, 0.0f,	// vertex 75
 
-		//Left nose 
-		0.0f, 0.0f, 0.0f,	// vertex 76
-		0.0f, 0.0f, 0.0f,	// vertex 77
-		0.0f, 0.0f, 0.0f,	// vertex 78
-		0.0f, 0.0f, 0.0f,	// vertex 79
+		//Left noise 
+		0.0f,  -0.53f, 0.0f,	// vertex 76
+		-0.25f, -0.50f, 0.0f,	// vertex 77
+		-0.10f, -0.58f, 0.0f,	// vertex 78
+		0.0f,  -0.60f, 0.0f,	// vertex 79
 
 		//Right mouth
 		0.0f,  -0.70f, 0.0f,	// vertex 80
@@ -232,7 +232,7 @@ void load()
 		//Right eye
 		0.0f, 0.0f, 0.0f,      //Vertex 32 
 		0.0f, 0.0f, 0.0f,      //Vertex 33
-		0.0f, 0.0f, 0.0f,       //Vertex 34 
+		0.0f, 0.0f, 0.0f,      //Vertex 34 
 		0.0f, 0.0f, 0.0f,      //Vertex 35 
 
 		//Left eye 
@@ -320,7 +320,7 @@ void load()
 	// The index buffer references the vertices we paint, in order
 	//here we have two triangles
 	const GLuint indices[] =
-	{   0, 1, 2,				// triangle 0
+	{	0, 1, 2,				// triangle 0
 		0, 2, 3,				// triangle 1
 
 		4, 5, 6,				// triangle 2
@@ -351,7 +351,8 @@ void load()
 		36, 38, 39,				// triangle 19
 
 		//Down face
-		40, 41, 43,				// traingle 20
+
+		40, 41, 43,				// triangle 20
 		41, 42, 43,				// triangle 21
 
 		44, 45, 47,				// triangle 22
@@ -498,6 +499,4 @@ int main(void)
 	glfwTerminate();
 	return 0;
 }
-
-
 
