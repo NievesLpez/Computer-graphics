@@ -318,4 +318,5 @@ int main(void)
 	//terminate glfw and exit
 	glfwTerminate();
 	return 0;
+
 }
