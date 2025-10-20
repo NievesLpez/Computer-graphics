@@ -1,0 +1,321 @@
+/*  Base code by Alun Evans 2016 LaSalle (aevanss@salleurl.edu) modified by: Conrado Ruiz, Ferran Ruiz 2024*/
+
+// student name: Lucia Perez y Nieves Yashuang Lopez
+
+//include some standard libraries
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include <iostream>
+
+//include OpenGL libraries
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+//include some custom code files
+#include "glfunctions.h"	//include all OpenGL stuff
+#include "Shader.h"			// class to compile shaders
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp> 
+
+
+using namespace std;
+using namespace glm;
+
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
+
+const char teapot[] = "assets/teapot.obj";
+vector <tinyobj::shape_t> shapeTeapot;
+
+const char bunny[] = "assets/bunny.obj";
+vector <tinyobj::shape_t> shapeBunny;
+
+
+//global variables to help us do things
+int g_ViewportWidth = 512; int g_ViewportHeight = 512; // Default window size, in pixels
+double mouse_x, mouse_y;	//variables storing mouse position
+const vec3 g_backgroundColor(0.2f, 0.2f, 0.2f); // background colour - a GLM 3-component vector
+
+//global var transf
+mat4 modelTeapot = mat4(1.0f);
+float teapot_angulo = 0.0f;
+float teapot_angulo02 = 0.0f;
+vec3 teapotPos = vec3(0.0f, 0.0f, -50.0f);
+mat4 modelBunny = mat4(1.0f);
+
+float bunny_angulo = 0.0f;
+float bunny_radio = 1.5f;
+
+vec3 color1 = vec3(0.9, 0.9, 0.2);
+vec3 color2 = vec3(0.68, 0.88, 0.91); 
+
+GLuint g_simpleShader = 0;	//shader identifier
+
+//teapot vao
+GLuint teapotVao = 0;			//vao
+GLuint teapotNumTriangles = 0;	 //  Number of triangles we are painting.
+
+//bunny vao
+GLuint bunnyVao = 0;			//vao
+GLuint bunnyNumTriangles = 0;	 //  Number of triangles we are painting.
+
+
+// ------------------------------------------------------------------------------------------
+// This function manually creates a square geometry (defined in the array vertices[])
+// ------------------------------------------------------------------------------------------
+void load()
+{
+	//**********************
+	// CODE TO SET GEOMETRY
+	//**********************
+	bool ret;
+	//Teapot
+	ret = tinyobj::LoadObj(shapeTeapot, teapot);
+
+	if (ret)
+		cout << "OBJ File: " << teapot << " sucessfully loaded\n";
+	else
+		cout << "OBJ File:" << teapot << " cannot be found or is not a valid OBJ\n";
+
+
+	//Bunny
+	ret = tinyobj::LoadObj(shapeBunny, bunny);
+
+	if (ret)
+		cout << "OBJ File: " << bunny << " sucessfully loaded\n";
+	else
+		cout << "OBJ File:" << bunny << " cannot be found or is not a valid OBJ\n";
+
+
+	//the positions of the corner of the square, each a 3-component vector, x, y, z
+	const GLfloat vertices[] =
+	{ 0.5f, -0.5f, 0.0f,		// vertex 0
+		0.5f,  0.5f, 0.0f,		// vertex 1
+	   -0.5f,  0.5f, 0.0f,		// vertex 2
+	   -0.5f, -0.5f, 0.0f };	// vertex 3
+
+	//we assign a colour to each corner (each colour is RGB)
+	const GLfloat colors[] =
+	{ 1.0f, 0.0f, 0.0f,		// color of vertex 1 (Red)
+		0.f, 1.0f, 0.0f,		// color of vertex 1 (Green)
+		0.0f, 0.0f, 1.0f,		// color of vertex 1 (Blue)
+		1.0f, 1.0f, 0.0f };		// color of vertex 1 (Yellow)
+
+	// The index buffer references the vertices we paint, in order
+	//here we have two triangles
+	const GLuint indices[] =
+	{ 0, 1, 2,				// triangle 0
+		0, 2, 3 };				// triangle 1
+
+
+	//**********************
+	// CODE TO LOAD EVERYTHING INTO MEMORY
+	//**********************
+
+	//load the shader
+	Shader simpleShader("src/shader.vert", "src/shader.frag");
+	g_simpleShader = simpleShader.program;
+
+	// Create the VAO where we store all geometry (stored in g_Vao)
+
+	teapotVao = gl_createAndBindVAO();
+
+	//std::cout << "vao: " << g_Vao;
+
+
+	//create vertex buffer for positions, colors, and indices, and bind them to shader
+
+	gl_createAndBindAttribute(&(shapeTeapot[0].mesh.positions[0]),
+		sizeof(float) * shapeTeapot[0].mesh.positions.size(),
+		g_simpleShader, "a_vertex", 3);
+
+	//gl_createAndBindAttribute(colors, sizeof(colors), g_simpleShader, "a_color", 3);
+
+	gl_createIndexBuffer(&(shapeTeapot[0].mesh.indices[0]),
+		sizeof(unsigned int) * shapeTeapot[0].mesh.indices.size());
+
+	//unbind everything
+
+	gl_unbindVAO();
+
+	//store number of triangles (use in draw())
+
+	teapotNumTriangles = shapeTeapot[0].mesh.indices.size() / 3;
+
+	//--------------------------------------------
+		//create vertex buffer for positions, colors, and indices, and bind them to shader
+	bunnyVao = gl_createAndBindVAO();
+
+	gl_createAndBindAttribute(&(shapeBunny[0].mesh.positions[0]),
+		sizeof(float) * shapeBunny[0].mesh.positions.size(),
+		g_simpleShader, "a_vertex", 3);
+
+	//gl_createAndBindAttribute(colors, sizeof(colors), g_simpleShader, "a_color", 3);
+
+	gl_createIndexBuffer(&(shapeBunny[0].mesh.indices[0]),
+		sizeof(unsigned int) * shapeBunny[0].mesh.indices.size());
+
+	//unbind everything
+
+	gl_unbindVAO();
+
+	//store number of triangles (use in draw())
+
+	bunnyNumTriangles = shapeBunny[0].mesh.indices.size() / 3;
+
+}
+
+// ------------------------------------------------------------------------------------------
+// This function actually draws to screen and called non-stop, in a loop
+// ------------------------------------------------------------------------------------------
+void draw()
+{
+	//clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// activate shader
+	glUseProgram(g_simpleShader);
+	float tiempo = glfwGetTime();
+	
+	GLuint projection_loc = glGetUniformLocation(g_simpleShader, "u_projection");
+
+	mat4 projection_matrix = glm::perspective(
+		glm::radians(90.0f), // Field of view en radianes
+		1.0f,                // Aspect ratio
+		0.1f,                // Near plane
+		500.0f                // Far plane
+	);
+
+
+	glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+
+	GLuint colorLoc = glGetUniformLocation(g_simpleShader, "u_color"); //get color
+	GLuint model_loc = glGetUniformLocation(g_simpleShader, "u_model"); //get mat
+
+	//teapot
+	gl_bindVAO(teapotVao);
+
+	vec3 fColor = mix(color1, color2, tiempo);
+
+	glUniform3f(colorLoc, fColor.x, fColor.y, fColor.z);
+
+
+	mat4 model1 = translate(mat4(1.0f), vec3(teapotPos.x, teapotPos.y, teapotPos.z));
+	mat4 model3 = glm::scale(mat4(1.0f), vec3(0.8, 0.8, 0.8));
+	mat4 modelTeapotRot = glm::rotate(mat4(1.0f), teapot_angulo, vec3(0.0, 1.0, 0.0));
+	mat4 modelTeapotRotUp = glm::rotate(mat4(1.0f), teapot_angulo02, vec3(1.0, 0.0, 0.0));
+
+	mat4 modelTeapotFinal = ( model1 * modelTeapotRot * modelTeapotRotUp * model3);
+
+	glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(modelTeapotFinal));
+
+	glDrawElements(GL_TRIANGLES, 3 * teapotNumTriangles, GL_UNSIGNED_INT, 0);
+
+	//bunny
+	gl_bindVAO(bunnyVao);
+	glUniform3f(colorLoc, 1.0f, 1.0f, 1.0);
+
+	float angulo = tiempo * 0.5f;	//controle velocity of rotation
+
+	//circular position
+	float pos_x = bunny_radio * cos(angulo);
+	float pos_y = bunny_radio * sin(angulo);
+
+	mat4 model2 = translate(mat4(1.0f), vec3(pos_x, pos_y, 0.0f));
+	mat4 model4 = glm::scale(mat4(1.0f), vec3(1.3, 1.3, 1.3));
+
+
+	mat4 modelBunnyFinal = model2 * model4;
+
+	glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(modelBunnyFinal));
+
+	glDrawElements(GL_TRIANGLES, 3 * bunnyNumTriangles, GL_UNSIGNED_INT, 0);
+
+
+
+
+
+}
+
+// ------------------------------------------------------------------------------------------
+// This function is called every time you press a screen
+// ------------------------------------------------------------------------------------------
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	//quit
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, 1);
+	//reload
+	if (key == GLFW_KEY_R && action == GLFW_PRESS)
+		load();
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
+		
+	};
+	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+		
+	};
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+		teapotPos.z -= 1.0f;
+	};
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+		teapotPos.z += 1.0f;
+	};
+}
+
+// ------------------------------------------------------------------------------------------
+// This function is called every time you click the mouse
+// ------------------------------------------------------------------------------------------
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	if (button == GLFW_MOUSE_BUTTON_LEFT) {
+
+		glfwGetCursorPos(window, &mouse_x, &mouse_y);
+
+		cout << "Left mouse down at" << mouse_x << ", " << mouse_y << endl;
+	}
+}
+
+int main(void)
+{
+	//setup window and boring stuff, defined in glfunctions.cpp
+	GLFWwindow* window;
+	if (!glfwInit())return -1;
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	window = glfwCreateWindow(g_ViewportWidth, g_ViewportHeight, "Hello OpenGL!", NULL, NULL);
+	if (!window) { glfwTerminate();	return -1; }
+	glfwMakeContextCurrent(window);
+	glewExperimental = GL_TRUE;
+	glewInit();
+
+	//input callbacks
+	glfwSetKeyCallback(window, key_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
+
+	glClearColor(g_backgroundColor.x, g_backgroundColor.y, g_backgroundColor.z, 1.0f);
+
+	//load all the resources
+	load();
+	
+	// Loop until the user closes the window
+	while (!glfwWindowShouldClose(window))
+	{
+		draw();
+
+		// Swap front and back buffers
+		glfwSwapBuffers(window);
+
+		// Poll for and process events
+		glfwPollEvents();
+
+		//mouse position must be tracked constantly (callbacks do not give accurate delta)
+		glfwGetCursorPos(window, &mouse_x, &mouse_y);
+	}
+
+	//terminate glfw and exit
+	glfwTerminate();
+	return 0;
+}
