@@ -72,6 +72,7 @@ vec3 orbitalTarget = vec3(0.0f, 0.0f, -2.0f);
 vec3 cameraPos = vec3(0.0f, 0.0f, 3.0f);
 vec3 cameraCenter = vec3(0.0f, 0.0f, -2.0f);
 vec3 cameraUp = vec3(0.0f, 1.0f, 0.0f);
+vec3 cameraFront = vec3(0.0f, 0.0f, -1.0f);
 
 float cameraSpeed = 0.1f;	//camara fps
 
@@ -109,7 +110,7 @@ GLuint texture_id_sky;// global texture id
 
 // Update Orbital Camera position -> new
 void updateOrbitalCamera() {
-	// Coordenadas esféricas: x = r·cos(v)·sin(h), y = r·sin(v), z = r·cos(v)·cos(h)
+	// Coordenadas esfÃ©ricas: x = rÂ·cos(v)Â·sin(h), y = rÂ·sin(v), z = rÂ·cos(v)Â·cos(h)
 	float radH = glm::radians(orbitalAngleH);
 	float radV = glm::radians(orbitalAngleV);
 
@@ -371,6 +372,10 @@ void draw()
 
 	float tiempo = glfwGetTime();
 
+	// (para actualizar los angulos del teapot cuando rote
+	teapot_angulo = tiempo;        
+	teapot_angulo02 = tiempo * 0.5f;
+
 	GLuint projection_loc = glGetUniformLocation(g_simpleShader, "u_projection");
 
 
@@ -405,7 +410,7 @@ void draw()
 	// VIEW MATRIX - Based on P05 slide 4
 	mat4 view_matrix;
 	if (isFPSCamera) {
-		// FPS Camera (lo haremos después)
+		// FPS Camera (lo haremos despuÃ©s)
 		view_matrix = glm::lookAt(cameraPos, cameraCenter, cameraUp);
 	}
 	else {
@@ -539,7 +544,7 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		load();
 
-	// Switch FPS/Orbital/Perspective -> new
+	// Switch FPS/Orbital/Perspective 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 		isPerspective = !isPerspective;
 
@@ -594,27 +599,28 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 		vec3 F = glm::normalize(cameraCenter - cameraPos);
 
 		// Calculate Side vector 
-		// S = F × up
+		// S = F Ã— up
 		vec3 S = glm::normalize(glm::cross(F, cameraUp));
 
-		// Forward (UP arrow) 
-		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			g_light_dir.y += 5;
+		// Adelante
+		if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			cameraPos += F * cameraSpeed;
+			cameraCenter += F * cameraSpeed;
 		}
-
-		// Backward (DOWN arrow) 
-		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			g_light_dir.y -= 5;
+		// AtrÃ¡s
+		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			cameraPos -= F * cameraSpeed;
+			cameraCenter -= F * cameraSpeed;
 		}
-
-		// Left (LEFT arrow) 
-		if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			g_light_dir.z += 5;
+		// Izquierda
+		if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			cameraPos -= S * cameraSpeed;
+			cameraCenter -= S * cameraSpeed;
 		}
-
-		// Right (RIGHT arrow) 
-		if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			g_light_dir.z += 5;
+		// Derecha
+		if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			cameraPos += S * cameraSpeed;
+			cameraCenter += S * cameraSpeed;
 		}
 	}
 }
@@ -647,6 +653,7 @@ void mouse_movement_callback(GLFWwindow* window, double xpos, double ypos) {
 	direction.y = sin(glm::radians(vertMov));
 	direction.z = sin(glm::radians(horMov)) * cos(glm::radians(vertMov));
 
+	cameraFront = normalize(direction); 
 	cameraCenter = cameraPos + glm::normalize(direction);
 }
 
