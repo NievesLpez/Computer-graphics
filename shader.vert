@@ -32,6 +32,6 @@ void main()
 
 	v_vertex = (u_model * vec4(a_vertex, 1.0)).xyz;
 
-	mat4 normalMatrix= transpose(inverse(u_model));
-	v_normal= ( normalMatrix* vec4(a_normal,1.0) ).xyz;
+	mat3 normalMatrix = transpose(inverse(mat3(u_model)));
+	v_normal = normalize(normalMatrix * a_normal);
 }
