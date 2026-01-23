@@ -110,7 +110,7 @@ GLuint texture_id_sky;				// global texture id
 
 // Update Orbital Camera position -> new
 void updateOrbitalCamera() {
-	// Coordenadas esféricas: x = r·cos(v)·sin(h), y = r·sin(v), z = r·cos(v)·cos(h)
+	// Coordenadas esfÃ©ricas: x = rÂ·cos(v)Â·sin(h), y = rÂ·sin(v), z = rÂ·cos(v)Â·cos(h)
 	float radH = glm::radians(orbitalAngleH);
 	float radV = glm::radians(orbitalAngleV);
 
@@ -568,7 +568,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		vec3 F = glm::normalize(cameraCenter - cameraPos);
 
 		// Calculate Side vector 
-		// S = F × up
+		// S = F Ã— up
 		vec3 S = glm::normalize(glm::cross(F, cameraUp));
 
 		// Adelante
@@ -576,7 +576,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			cameraPos += F * cameraSpeed;
 			cameraCenter += F * cameraSpeed;
 		}
-		// Atrás
+		// AtrÃ¡s
 		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			cameraPos -= F * cameraSpeed;
 			cameraCenter -= F * cameraSpeed;
