@@ -92,25 +92,25 @@ GLuint g_simpleShader = 0;	//shader identifier
 
 //teapot vao
 GLuint teapotVao = 0;			//vao
-GLuint teapotNumTriangles = 0;	 //  Number of triangles we are painting.
+GLuint teapotNumTriangles = 0;	//  Number of triangles we are painting.
 
 //bunny vao
 GLuint bunnyVao = 0;			//vao
-GLuint bunnyNumTriangles = 0;	 //  Number of triangles we are painting.
+GLuint bunnyNumTriangles = 0;	//  Number of triangles we are painting.
 
 //texture global variable 
 GLuint texture_id;
 GLuint texture_id2;
 
 //SKYBOX shader var
-GLuint g_simpleShader_sky = 0;// skybox shader identifier
-GLuint g_Vao_sky = 0;// skybox vao
-GLuint g_NumTriangles_sky = 0;// number of triangles of the skybox
-GLuint texture_id_sky;// global texture id
+GLuint g_simpleShader_sky = 0;		// skybox shader identifier
+GLuint g_Vao_sky = 0;				// skybox vao
+GLuint g_NumTriangles_sky = 0;		// number of triangles of the skybox
+GLuint texture_id_sky;				// global texture id
 
 // Update Orbital Camera position -> new
 void updateOrbitalCamera() {
-	// Coordenadas esfÃ©ricas: x = rÂ·cos(v)Â·sin(h), y = rÂ·sin(v), z = rÂ·cos(v)Â·cos(h)
+	// Coordenadas esféricas: x = r·cos(v)·sin(h), y = r·sin(v), z = r·cos(v)·cos(h)
 	float radH = glm::radians(orbitalAngleH);
 	float radV = glm::radians(orbitalAngleV);
 
@@ -135,7 +135,7 @@ void load()
 	//SKYBOX
 	bool ret_sky = tinyobj::LoadObj(shapes_sky, sphere);
 
-	if (ret)
+	if (ret_sky)
 		cout << "OBJ File: " << sphere << " sucessfully loaded\n";
 	else
 		cout << "OBJ File:" << sphere << " cannot be found or is not a valid OBJ\n";
@@ -167,7 +167,7 @@ void load()
 
 	//we assign a colour to each corner (each colour is RGB)
 	const GLfloat colors[] =
-	{ 1.0f, 0.0f, 0.0f,		// color of vertex 1 (Red)
+	{ 1.0f, 0.0f, 0.0f,			// color of vertex 1 (Red)
 		0.f, 1.0f, 0.0f,		// color of vertex 1 (Green)
 		0.0f, 0.0f, 1.0f,		// color of vertex 1 (Blue)
 		1.0f, 1.0f, 0.0f };		// color of vertex 1 (Yellow)
@@ -175,7 +175,7 @@ void load()
 	// The index buffer references the vertices we paint, in order
 	//here we have two triangles
 	const GLuint indices[] =
-	{ 0, 1, 2,				// triangle 0
+	{ 0, 1, 2,					// triangle 0
 		0, 2, 3 };				// triangle 1
 
 
@@ -191,27 +191,21 @@ void load()
 	Shader simpleShader_sky("src/shader_sky.vert", "src/shader_sky.frag");
 	g_simpleShader_sky = simpleShader_sky.program;
 
+
+	//create vertex buffer for positions, colors, and indices, and bind them to shader
+
 	// Create the VAO where we store all geometry (stored in g_Vao)
 	//SKYBOX VAO
 
 	g_Vao_sky = gl_createAndBindVAO();
-
-	//Teapot VAO
-	
-	teapotVao = gl_createAndBindVAO();
-
-	//std::cout << "vao: " << g_Vao;
-
-
-	//create vertex buffer for positions, colors, and indices, and bind them to shader
 
 	//Skybox
 	gl_createAndBindAttribute(&(shapes_sky[0].mesh.positions[0]),
 		shapes_sky[0].mesh.positions.size() * sizeof(float), g_simpleShader_sky,
 		"a_vertex", 3);
 
-		gl_createIndexBuffer(&(shapes_sky[0].mesh.indices[0]),
-			shapes_sky[0].mesh.indices.size() * sizeof(unsigned int));
+	gl_createIndexBuffer(&(shapes_sky[0].mesh.indices[0]),
+		shapes_sky[0].mesh.indices.size() * sizeof(unsigned int));
 
 	gl_createAndBindAttribute(&(shapes_sky[0].mesh.texcoords[0]),
 		shapes_sky[0].mesh.texcoords.size() * sizeof(GLfloat), g_simpleShader_sky,
@@ -222,13 +216,16 @@ void load()
 	g_NumTriangles_sky = shapes_sky[0].mesh.indices.size() / 3;
 
 
+	//Teapot VAO
+	teapotVao = gl_createAndBindVAO();
+
 	//Teapot
 	gl_createAndBindAttribute(&(shapeTeapot[0].mesh.positions[0]),
 		sizeof(float) * shapeTeapot[0].mesh.positions.size(),
 		g_simpleShader, "a_vertex", 3);
 
 
-	
+
 	gl_createAndBindAttribute(
 		&(shapeTeapot[0].mesh.texcoords[0]),
 		shapeTeapot[0].mesh.texcoords.size() * sizeof(GLfloat),
@@ -238,15 +235,12 @@ void load()
 
 	gl_createAndBindAttribute(&(shapeTeapot[0].mesh.normals[0]),
 		shapeTeapot[0].mesh.normals.size() * sizeof(float),
-		g_simpleShader, "a_normal", 3); 
+		g_simpleShader, "a_normal", 3);
 
 
-		//gl_createAndBindAttribute(colors, sizeof(colors), g_simpleShader, "a_color", 3);
-
-		gl_createIndexBuffer(&(shapeTeapot[0].mesh.indices[0]), sizeof(unsigned int) * shapeTeapot[0].mesh.indices.size());
+	gl_createIndexBuffer(&(shapeTeapot[0].mesh.indices[0]), sizeof(unsigned int) * shapeTeapot[0].mesh.indices.size());
 
 	//unbind everything
-
 	gl_unbindVAO();
 
 	//store number of triangles (use in draw())
@@ -292,26 +286,26 @@ void load()
 	char path_sky[] = "textures/sunset.png";
 	int width, height, numChannels;
 
-	stbi_set_flip_vertically_on_load(true); // Remove if texture is flipped.
+	stbi_set_flip_vertically_on_load(true);		// Remove if texture is flipped.
 	unsigned char* pixels_sky = stbi_load(path_sky, &width, &height, &numChannels, 0);
 
 	glGenTextures(1, &texture_id_sky);
 	glBindTexture(GL_TEXTURE_2D, texture_id_sky);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, // target
-		0, // level = 0 base, no mipmap
-		GL_RGB, // how the data will be stored(Grayscale, RGB, RGBA)
-		width, // width of the image
-		height, // height of the image
-		0, //border
-		GL_RGB, // format of original data
-		GL_UNSIGNED_BYTE,// type of data
+	glTexImage2D(GL_TEXTURE_2D,		// target
+		0,							// level = 0 base, no mipmap
+		GL_RGB,						// how the data will be stored(Grayscale, RGB, RGBA)
+		width,						// width of the image
+		height,						// height of the image
+		0,							//border
+		GL_RGBA,					// format of original data
+		GL_UNSIGNED_BYTE,			// type of data
 		pixels_sky);
 
 
 
-	char path[] = "textures/marble.bmp";
-	
+	char path[] = "textures/arco_baseColor.jpg";
+
 
 	stbi_set_flip_vertically_on_load(true);
 	unsigned char* pixels = stbi_load(path, &width, &height, &numChannels, 0);
@@ -330,8 +324,8 @@ void load()
 		pixels);
 
 
-	char path2[] = "textures/wood.bmp";
-	
+	char path2[] = "textures/mushroom_baseColor.jpg";
+
 	pixels = stbi_load(path2, &width, &height, &numChannels, 0);
 
 	glGenTextures(1, &texture_id2);
@@ -356,27 +350,17 @@ void draw()
 {
 	//clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-
 	glEnable(GL_CULL_FACE);
-	
-
-	GLuint u_texture = glGetUniformLocation(g_simpleShader, "u_texture");
-
-	glUniform1i(u_texture, 0);
-
+	glCullFace(GL_FRONT);
+	glDisable(GL_DEPTH_TEST);
 
 	// activate shader
-	glUseProgram(g_simpleShader);
 	glUseProgram(g_simpleShader_sky);
+	
 
-	float tiempo = glfwGetTime();
-
-	// (para actualizar los angulos del teapot cuando rote
-	teapot_angulo = tiempo;        
-	teapot_angulo02 = tiempo * 0.5f;
-
-	GLuint projection_loc = glGetUniformLocation(g_simpleShader, "u_projection");
+	float tiempo = glfwGetTime(); // para actualizar los angulos del teapot cuando rote
+	teapot_angulo = tiempo;
+	teapot_angulo02 = tiempo * 10.0f;
 
 
 	mat4 projection_matrix;
@@ -389,7 +373,7 @@ void draw()
 		);
 	}
 	else {
-		// Orthographic projection (P04 slide 11)
+		// Orthographic projection 
 		projection_matrix = glm::ortho(
 			-3.0f, 3.0f,   // left, right
 			-3.0f, 3.0f,   // bottom, top
@@ -398,19 +382,10 @@ void draw()
 	}
 
 
-	glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection_matrix));
-
-	GLuint colorLoc = glGetUniformLocation(g_simpleShader, "u_color"); //get color
-	GLuint model_loc = glGetUniformLocation(g_simpleShader, "u_model"); //get mat
-
-
-	//camera -> new
-	GLuint view_loc = glGetUniformLocation(g_simpleShader, "u_view");
-
-	// VIEW MATRIX - Based on P05 slide 4
+	// VIEW MATRIX 
 	mat4 view_matrix;
 	if (isFPSCamera) {
-		// FPS Camera (lo haremos despuÃ©s)
+		// FPS Camera 
 		view_matrix = glm::lookAt(cameraPos, cameraCenter, cameraUp);
 	}
 	else {
@@ -419,15 +394,8 @@ void draw()
 		view_matrix = glm::lookAt(cameraPos, cameraCenter, cameraUp);
 	}
 
-	glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view_matrix));
 
 	//SKYBOX
-	glCullFace(GL_FRONT);
-	glDisable(GL_DEPTH_TEST);
-
-	gl_bindVAO(g_Vao_sky);
-	glDrawElements(GL_TRIANGLES, 3 * g_NumTriangles_sky, GL_UNSIGNED_INT, 0);
-
 	//texture
 	GLuint u_texture_sky = glGetUniformLocation(g_simpleShader_sky,
 		"u_texture");
@@ -451,21 +419,31 @@ void draw()
 	glUniformMatrix4fv(view_loc_sky, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(projection_loc_sky, 1, GL_FALSE, glm::value_ptr(projection_matrix));
 
-	mat4 model5 = glm::scale(mat4(1.0f), vec3(13.0f, 13.0f, 13.0f));
 
+	gl_bindVAO(g_Vao_sky);
+	glDrawElements(GL_TRIANGLES, 3 * g_NumTriangles_sky, GL_UNSIGNED_INT, 0);
 
 	//OTHER OBJECTS
 	glEnable(GL_DEPTH_TEST);
 	glCullFace(GL_BACK);
 
+	glUseProgram(g_simpleShader);
+
+	GLuint projection_loc = glGetUniformLocation(g_simpleShader, "u_projection");
+	glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+
+	GLuint model_loc = glGetUniformLocation(g_simpleShader, "u_model"); //get mat
+
+	//camera 
+	GLuint view_loc = glGetUniformLocation(g_simpleShader, "u_view");
+	glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view_matrix));
+
 	//teapot
 	gl_bindVAO(teapotVao);
 
-	vec3 fColor = mix(color1, color2, tiempo);
-
-	glUniform3f(colorLoc, fColor.x, fColor.y, fColor.z);
-
 	//texture
+	GLuint u_texture = glGetUniformLocation(g_simpleShader, "u_texture");
+	glUniform1i(u_texture, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 
@@ -475,7 +453,7 @@ void draw()
 	//mat4 model1 = translate(view_matrix, vec3 (cameraCenter));
 	mat4 model3 = glm::scale(mat4(1.0f), vec3(0.8, 0.8, 0.8));
 	mat4 modelTeapotRot = glm::rotate(mat4(1.0f), teapot_angulo, vec3(0.0, 1.0, 0.0));
-	mat4 modelTeapotRotUp = glm::rotate(mat4(1.0f), teapot_angulo02, vec3(1.0, 0.0, 0.0));
+	mat4 modelTeapotRotUp = glm::rotate(mat4(1.0f), teapot_angulo02, vec3(0.0, 1.0, 0.0));
 
 	mat4 modelTeapotFinal = (model1 * modelTeapotRot * modelTeapotRotUp * model3);
 
@@ -485,8 +463,6 @@ void draw()
 
 	//bunny
 	gl_bindVAO(bunnyVao);
-	glUniform3f(colorLoc, 1.0f, 1.0f, 1.0);
-
 
 	//texture
 	glActiveTexture(GL_TEXTURE0);
@@ -494,11 +470,9 @@ void draw()
 
 
 	//position
-
 	float angulo = tiempo * 40.0f;	//controle velocity of rotation
 
 	//circular position
-
 	mat4 model2 = model1 * rotate(mat4(1.0f), angulo, vec3(0.0f, 0.4f, 0.0f)) * translate(mat4(1.0f), vec3(1.0f, 0.0f, 0.0f));
 	mat4 model4 = glm::scale(mat4(1.0f), vec3(1.3, 1.3, 1.3));
 
@@ -536,7 +510,7 @@ void draw()
 // This function is called every time you press a screen
 // ------------------------------------------------------------------------------------------
 
-void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods) {
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	//quit
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, 1);
@@ -547,17 +521,12 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 	// Switch FPS/Orbital/Perspective 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 		isPerspective = !isPerspective;
-
-		// QUITAR LOS COUT - SOLO PARA COMPROBAR 
-		cout << ">>> Projection changed to: " << (isPerspective ? "PERSPECTIVE" : "ORTHOGRAPHIC") << endl;
 	}
 	if (key == GLFW_KEY_O && action == GLFW_PRESS) {
 		isFPSCamera = false;
-		cout << "Camera: Orbital" << endl;
 	}
 	if (key == GLFW_KEY_F && action == GLFW_PRESS) {
 		isFPSCamera = true;
-		cout << "Camera: FPS" << endl;
 	}
 
 	// ORBITAL CAMERA CONTROLS
@@ -599,7 +568,7 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 		vec3 F = glm::normalize(cameraCenter - cameraPos);
 
 		// Calculate Side vector 
-		// S = F Ã— up
+		// S = F × up
 		vec3 S = glm::normalize(glm::cross(F, cameraUp));
 
 		// Adelante
@@ -607,7 +576,7 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 			cameraPos += F * cameraSpeed;
 			cameraCenter += F * cameraSpeed;
 		}
-		// AtrÃ¡s
+		// Atrás
 		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			cameraPos -= F * cameraSpeed;
 			cameraCenter -= F * cameraSpeed;
@@ -653,7 +622,7 @@ void mouse_movement_callback(GLFWwindow* window, double xpos, double ypos) {
 	direction.y = sin(glm::radians(vertMov));
 	direction.z = sin(glm::radians(horMov)) * cos(glm::radians(vertMov));
 
-	cameraFront = normalize(direction); 
+	cameraFront = normalize(direction);
 	cameraCenter = cameraPos + glm::normalize(direction);
 }
 
