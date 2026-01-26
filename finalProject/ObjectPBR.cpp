@@ -155,3 +155,4 @@ void ObjectPBR::Draw(const glm::mat4& model,
     gl_bindVAO(vao);
     glDrawElements(GL_TRIANGLES, 3 * numTriangles, GL_UNSIGNED_INT, 0);
 }
+
