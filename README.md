@@ -66,7 +66,7 @@ Authors: Nieves Yashuang, Lucía Pérez
 ---------------------
 ---------------------
 
-# Exercise 03 - 3D objects with textures and skybox implementation.
+# Exercise 04 - 3D objects with textures and skybox implementation.
 Authors: Nieves Yashuang, Lucía Pérez 
 
 
