@@ -277,7 +277,7 @@ static void load()
     // Load ALL PBR objects (Scene)
 
     bool ok = g_scene.LoadAll(g_simpleShader);
-    if (!ok) cout << "WARNING: Scene::LoadAll() devolvió false (algún recurso falló)\n";
+    if (!ok) cout << "WARNING: Scene::LoadAll() devolviÃ³ false (algÃºn recurso fallÃ³)\n";
 }
 
 // ---------------------------------------------------------------------------------------------------------
@@ -444,7 +444,7 @@ static void draw()
 
     glm::mat4 I(1.0f);
 
-    // Estáticos
+    // EstÃ¡ticos
     DrawDepthObj(g_scene.arcoC, I);
     DrawDepthObj(g_scene.paredC, I);
     DrawDepthObj(g_scene.suelo, I);
@@ -563,7 +563,7 @@ static void draw()
 
 
     // -----------------------------
-    // Estáticos
+    // EstÃ¡ticos
     mat4 M = mat4(1.0f);
 
     glEnable(GL_BLEND);
